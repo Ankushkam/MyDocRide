@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-5">
+            <p><flash-messages></flash-messages></p>
+            <form [formGroup]="saveCardForm" novalidate (ngSubmit)="saveCard()">
+                <div class="form-group">
+                    <label class="form-label">Name on card</label>
+                    <input type="text" class="form-control" formControlName="name" name="name"
+                        [class.is-invalid]="saveCardForm.get('name').touched && saveCardForm.get('name').invalid"
+                        [class.is-valid]="saveCardForm.get('name').valid"
+                    >
+                    <div *ngIf="saveCardForm.get('name').touched && saveCardForm.get('name').invalid">
+                        <span class="text-danger" *ngIf="saveCardForm.get('name').errors?.required">Name is required</span>
+                        <span class="text-danger" *ngIf="saveCardForm.get('name').errors?.pattern">Invalid Name</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"> Card Details </label>
+                    <div id="card-element" class="field"></div>
+                    <div *ngIf="!isCardValid">
+                        <span class="text-danger">{{ cardErrorMsg }}</span>
+                    </div>
+                </div>
+                <p><button class="btn btn-success" type="submit" [disabled]="!saveCardForm.valid">Save Card</button></p>
+            </form>
+        </div>
+    </div>
+</div>

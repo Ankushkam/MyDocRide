@@ -1,0 +1,111 @@
+<div *ngIf="dataLoaded | async">
+  <div class="pad_top_right">
+
+  <div *ngIf="activeRides.length > 0; then showData; else showMsg"></div>
+  <ng-template #showData>
+    <div class="ride_map">
+      <agm-map [latitude]="sourceLat" [longitude]="sourceLng">
+        <div> <!-- *ngFor="let pastRide of activeRides"-->
+          <agm-marker *ngFor="let doctor of activeRides"
+              [iconUrl]="iconUrlAtStart"
+              [latitude]="doctor.destination_point.lat" 
+              [longitude]="doctor.destination_point.lng">
+              <agm-info-window [isOpen]="true">
+                <div class="text-center">
+                  <ngx-avatar *ngIf="doctor.patient_image===null" [name]="doctor.patient_first_name+' '+doctor.patient_last_name" size="40">
+                  </ngx-avatar>
+                  <div>
+                    <img *ngIf="doctor.patient_image!==null" [src]="doctor.patient_image" class="info-window" style="width: 50px;height: 50px;" />
+                  </div>
+                </div>
+                {{ doctor.patient_first_name | titlecase }} {{ doctor.patient_last_name | titlecase }}
+              </agm-info-window>  
+          </agm-marker>
+      </div>
+      </agm-map>
+    </div>
+  
+    <!-- <div *ngFor="let pastRide of activeRides"> -->
+      <div class="card shadow-none member_block" *ngFor="let doctor of activeRides"> 
+        <h5 class="card-header"> 
+          <span class="member_img">
+            <ngx-avatar *ngIf="doctor.patients_image===null" [name]="doctor.patient_first_name+' '+doctor.patient_last_name" size="51">
+            </ngx-avatar>
+            <img *ngIf="doctor.patient_image!==null" [src]="doctor.patient_image"/>
+          </span>{{ doctor.patient_first_name | titlecase }} {{ doctor.patient_last_name | titlecase }} 
+          <em>{{doctor.rider_role}}</em>
+        </h5>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-5">
+              <div class="ride_view">
+                <agm-map 
+                  [latitude]="doctor.sourceLat" 
+                  [zoom]="zoom"  
+                  [longitude]="doctor.sourceLng" 
+                  (mapReady)="onMapReady($event)"
+                >
+                 <agm-marker
+                    [latitude]="doctor.sourceLat" 
+                    [longitude]="doctor.sourceLng">
+                </agm-marker>
+          
+                <agm-marker 
+                    [latitude]="doctor.destinationLat" 
+                    [longitude]="doctor.destinationLng"
+                ></agm-marker>
+          
+                <agm-direction  
+                    [origin]="doctor.coordinates.origin" 
+                    [destination]="doctor.coordinates.destination"
+                ></agm-direction>
+              </agm-map>
+                <!-- <img src="https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=enc%3A{{doctor.waypoints}}&key=AIzaSyCfGRBUZE435kk_E_-q_n84AAtOOkxHvOs"/> -->
+              </div>
+            </div>
+    
+            <div class="col-md-7 ride_details">
+                <p>{{ doctor.created_at | date:'shortDate' }} <em class="dot"></em><span> {{ doctor.created_at | date:'shortTime' }} </span></p>
+    
+                <ul>
+                  <li>
+                    <i class="fa fa-map-marker"></i>
+                    <p>{{ doctor.pick_up_point.name }}</p>
+                    <!-- <span><img src="assets/images/clock.svg"/>{{  doctor.estimated_time.duration_string }}</span> -->
+                    <span><img src="assets/images/miles.svg"/>{{  doctor.distance }} Miles</span>
+                  </li>
+    
+                  <li>
+                    <i class="fa fa-map-marker"></i> <p>{{ doctor.destination_point.name }}</p>
+                  </li>
+                </ul>
+    
+                <div class="driver_info">
+                  <i class="member_img">
+                    <ngx-avatar *ngIf="doctor.driver_thumb_image===null" [name]="doctor.driver_name+' '+doctor.driver_lastname" size="38">
+                    </ngx-avatar>
+                    <img *ngIf="doctor.driver_thumb_image!==null" [src]="doctor.driver_thumb_image"/>
+                  </i>
+                  <div class="d-flex">
+                    <span><em>Driver</em>{{ doctor.driver_name | titlecase }} {{ doctor.driver_lastname | titlecase }}</span>
+                    <span><em>{{ doctor.vehicle_name | titlecase }}</em>{{ doctor.vehicle_name | uppercase }}</span>
+                    <!-- <span><em>Fare</em>${{ doctor.amount_paid_to_driver }}</span>driver_payout -->
+                    <span><em>Fare</em>${{ doctor.driver_payout || 0.00 }}</span>
+                  </div>
+                </div>
+    
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    <!-- </div>  -->
+  </ng-template>
+  
+  <ng-template #showMsg>
+    <div class="msg">
+      <h3>No Active Ride Found</h3>
+    </div>
+  </ng-template>
+  </div>
+</div>

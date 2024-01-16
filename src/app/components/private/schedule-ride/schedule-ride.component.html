@@ -1,0 +1,175 @@
+<div *ngIf="mapLoaded | async">
+  <div class="pad_top_right">
+    <div class="patient_profile_section">
+      <span class="profile_img">
+        <ngx-avatar *ngIf="patient.image===null" [name]="patient.name">
+        </ngx-avatar>
+        <img *ngIf="patient.image!==null" [src]="patient.image"/>
+       </span>
+      <h6>{{ patient.name | titlecase }}</h6>
+      <p>Member</p>
+    </div>
+  
+    <div>
+      <label class="mt-3"> Enter Location </label>
+      <form [formGroup]="locationForm" (ngSubmit)="search()">
+        <div class="form-row">
+          <div class="col-md-5 mb-3">
+            <div class="icon_input">
+             <input 
+               class="form-control"
+               ngx-google-places-autocomplete 
+               [options]='options' 
+               formControlName="pickup_location"
+               name="pickup_location"
+               #placesRef="ngx-places" 
+               (onAddressChange)="getSource($event)"
+               placeholder="Enter Pickup Location"
+             />
+              <i class="fa fa-map-marker text-success"></i>
+            </div> 
+          </div>
+     
+          <div class="col-md-5 mb-3">
+            <div class="icon_input">
+             <input 
+               class="form-control"
+               ngx-google-places-autocomplete 
+               [options]='options' 
+               formControlName="drop_location"
+               name="drop_location"
+               #placesRef="ngx-places" 
+               (onAddressChange)="getDestination($event)"
+               placeholder="Enter Destination"
+             />
+              <i class="fa fa-map-marker text-danger"></i>
+            </div>
+          </div>
+          
+          <div class="col-md-2 col-sm-4 mb-3">
+            <button type="submit" class="btn btn-success btn-block">Search</button>
+          </div>
+     
+        </div>
+      </form>
+    </div>
+    
+    <div class="contact_section height_400">
+      <agm-map 
+          [latitude]="sourceLat" 
+          [zoom]="zoom"  
+          [longitude]="sourceLng" 
+          (mapReady)="onMapReady($event)"
+      >
+        <agm-marker
+            [iconUrl]="iconUrlAtStart"
+            [latitude]="sourceLat" 
+            [longitude]="sourceLng" 
+            [markerDraggable]="true"
+            (dragEnd)="markerDragEnd($event)">
+        </agm-marker>
+  
+        <agm-marker 
+            [iconUrl]="iconUrlAtStart" 
+            [latitude]="destinationLat" 
+            [longitude]="destinationLng"
+        ></agm-marker>
+  
+        <agm-direction *ngIf="dir" 
+            [origin]="dir.origin" 
+            [destination]="dir.destination"
+            [renderOptions]="renderOptions"
+            [markerOptions]="markerOptions"
+            (originDrag)="changeOrigin($event)"
+            [travelMode]="travelMode"
+            [drivingOptions]="drivingOptions"
+        ></agm-direction>
+    
+      </agm-map>
+    </div>
+  
+    <div class="row car_options" *ngIf="isSearched">
+      <div class="col-md-3">
+        <p>Choose Ride type</p>
+      </div>
+      <div class="col-md-9">
+        <ul>
+  
+          <li *ngFor="let car of cars; let i = index">
+            <a [class.active]="vehical===car.car_name" href="javascript:void(0)" (click)="selectVehical($event, car.car_name)">
+              <img src={{car.car_image}} class="car-width">
+            <!-- <em>
+              <svg id="sedan" xmlns="http://www.w3.org/2000/svg" width="85" height="38.903" viewBox="0 0 85 38.903">
+                <g id="Group_267" data-name="Group 267" transform="translate(11.333 24.737)">
+                  <g id="Group_266" data-name="Group 266">
+                    <path id="Path_3023" data-name="Path 3023" d="M365.483,287.834a7.083,7.083,0,1,1-7.083,7.083A7.091,7.091,0,0,1,365.483,287.834Zm0,11.333a4.25,4.25,0,1,0-4.25-4.25A4.255,4.255,0,0,0,365.483,299.167Z" transform="translate(-358.4 -287.834)"/>
+                  </g>
+                </g>
+                <g id="Group_269" data-name="Group 269" transform="translate(59.5 24.737)">
+                  <g id="Group_268" data-name="Group 268">
+                    <path id="Path_3024" data-name="Path 3024" d="M75.349,287.834a7.083,7.083,0,1,1-7.083,7.083A7.091,7.091,0,0,1,75.349,287.834Zm0,11.333a4.25,4.25,0,1,0-4.25-4.25A4.255,4.255,0,0,0,75.349,299.167Z" transform="translate(-68.266 -287.834)"/>
+                  </g>
+                </g>
+                <g id="Group_271" data-name="Group 271" transform="translate(0 0)">
+                  <g id="Group_270" data-name="Group 270">
+                    <path id="Path_3025" data-name="Path 3025" d="M1.416,163.57v-8.5a1.415,1.415,0,0,1,.969-1.344l7.994-2.665c3.01-5.1,7.149-9.951,16.293-11.553l.051-.008c16.887-2.335,29.566,1.475,37.706,11.326,9.411.136,19.154,3.1,19.154,8.494v4.25A1.417,1.417,0,0,1,85,164.986v5.667a1.417,1.417,0,0,1-1.417,1.417H77.917a1.417,1.417,0,0,1-1.417-1.417,9.917,9.917,0,0,0-19.833,0,1.417,1.417,0,0,1-1.417,1.417H29.75a1.417,1.417,0,0,1-1.417-1.417,9.917,9.917,0,0,0-19.833,0,1.417,1.417,0,0,1-1.417,1.417H1.417A1.417,1.417,0,0,1,0,170.653v-5.667A1.416,1.416,0,0,1,1.416,163.57Zm18.348-18.621a19.044,19.044,0,0,0-5.885,5.871h5.94Zm17.07-3.282a64.431,64.431,0,0,0-9.7.637,23.537,23.537,0,0,0-4.553,1.257l.069,7.26H36.833Zm2.833.121v9.034H60.6C55.35,145.4,48.426,142.41,39.666,141.787ZM2.833,169.236H5.744a12.751,12.751,0,0,1,25.344,0H53.911a12.751,12.751,0,0,1,25.344,0h2.911V166.4a1.417,1.417,0,0,1-1.417-1.417v-4.25H79.333a1.417,1.417,0,1,1,0-2.833h.734c-1.917-2.081-7.78-4.25-16.317-4.25H11.564l-7.314,2.438V157.9H5.666a1.417,1.417,0,0,1,0,2.833H4.249v4.25A1.417,1.417,0,0,1,2.833,166.4Z" transform="translate(0 -138.833)"/>
+                  </g>
+                </g>
+              </svg>
+            </em> -->
+           <span>{{car.car_name}}</span></a></li>
+  
+           <!-- <li><a [class.active]="vehical==='medical van'" href="javascript:void(0)" (click)="selectVehical($event, 'medical van')">
+             <em>
+               <svg xmlns="http://www.w3.org/2000/svg" width="83.975" height="68.252" viewBox="0 0 83.975 68.252">
+               <g id="Group_273" data-name="Group 273" transform="translate(0 -47.929)">
+                 <path id="Path_3026" data-name="Path 3026" d="M249.017,54.912a1.24,1.24,0,0,0,1.24-1.24v-4.5a1.24,1.24,0,0,0-2.48,0v4.5A1.24,1.24,0,0,0,249.017,54.912Z" transform="translate(-207.136)"/>
+                 <path id="Path_3027" data-name="Path 3027" d="M184.489,70.972a1.24,1.24,0,0,0,1.753-1.754l-3.19-3.188a1.24,1.24,0,0,0-1.753,1.754Z" transform="translate(-151.259 -14.829)"/>
+                 <path id="Path_3028" data-name="Path 3028" d="M296.441,71.335a1.236,1.236,0,0,0,.877-.363l3.189-3.188a1.24,1.24,0,1,0-1.753-1.754l-3.189,3.188a1.24,1.24,0,0,0,.876,2.117Z" transform="translate(-246.782 -14.829)"/>
+                 <path id="Path_3029" data-name="Path 3029" d="M287.767,288.68H290.9a1.24,1.24,0,0,0,0-2.48h-3.134a1.24,1.24,0,0,0,0,2.48Z" transform="translate(-239.53 -199.189)"/>
+                 <path id="Path_3030" data-name="Path 3030" d="M80.874,152.8v-9.818c.041-3.783-2-6.34-5.461-6.841-3.437-.5-4.289-.738-5.5-2.179l-.013-.016-8.588-9.862-.037-.041c-2.562-2.692-3.622-3.806-6.571-3.806H46.77V117.6a5.125,5.125,0,0,0-5.117-5.121h-.386a5.127,5.127,0,0,0-5.122,5.121v2.641H20.986a1.24,1.24,0,1,0,0,2.48H40.642c0,.009,0,.017,0,.026v29.943H28.369a10.025,10.025,0,0,0-13.549,0H5.6V124.424a1.719,1.719,0,0,1,1.685-1.707H15.3a1.24,1.24,0,0,0,0-2.48H7.289a4.18,4.18,0,0,0-4.164,4.186v28.37a4.042,4.042,0,0,0,.919,7.978h7.531a10.043,10.043,0,0,0,20.042,0h9.358a1.24,1.24,0,1,0,0-2.48h-9.5a9.972,9.972,0,0,0-1.133-3.125H54.927a9.972,9.972,0,0,0-1.134,3.125H46.651a1.24,1.24,0,0,0,0,2.48h7a10.046,10.046,0,0,0,20.046,0h6.234a4.042,4.042,0,0,0,.942-7.973Zm-2.48-6.684H74.646a.481.481,0,0,1-.481-.48v-1.292a.484.484,0,0,1,.481-.475h3.749ZM38.625,117.6a2.645,2.645,0,0,1,2.642-2.641h.386a2.642,2.642,0,0,1,2.638,2.641v2.641H38.625V117.6Zm4.4,5.121H54.7c1.811,0,2.211.342,4.755,3.016l8.563,9.834c1.85,2.194,3.591,2.531,7.037,3.028a3.506,3.506,0,0,1,3.17,2.794H74.645a2.961,2.961,0,0,0-2.96,2.955v1.292a2.963,2.963,0,0,0,2.96,2.959h3.749v4.092H70.452a10.029,10.029,0,0,0-13.552,0H43.027V122.744c0-.009,0-.017,0-.026ZM2.48,156.729a1.565,1.565,0,0,1,1.564-1.563H4.05a1.2,1.2,0,0,0,.629,0h8.169a9.971,9.971,0,0,0-1.133,3.125H4.044A1.565,1.565,0,0,1,2.48,156.729ZM21.6,167.662a7.565,7.565,0,1,1,7.566-7.563,7.573,7.573,0,0,1-7.566,7.563Zm42.082,0a7.565,7.565,0,1,1,7.566-7.563,7.575,7.575,0,0,1-7.566,7.563Zm16.255-9.37H73.557a9.976,9.976,0,0,0-1.133-3.125h6.9a1.2,1.2,0,0,0,.626,0,1.562,1.562,0,0,1-.014,3.125Z" transform="translate(0 -53.96)"/>
+                 <path id="Path_3031" data-name="Path 3031" d="M364.086,373.926a4.737,4.737,0,1,0,4.736,4.74A4.743,4.743,0,0,0,364.086,373.926Zm0,6.995a2.257,2.257,0,1,1,2.257-2.255A2.258,2.258,0,0,1,364.086,380.921Z" transform="translate(-300.409 -272.526)"/>
+                 <path id="Path_3032" data-name="Path 3032" d="M107.521,373.926a4.737,4.737,0,1,0,4.736,4.74A4.743,4.743,0,0,0,107.521,373.926Zm0,6.995a2.257,2.257,0,1,1,2.257-2.255A2.258,2.258,0,0,1,107.521,380.921Z" transform="translate(-85.926 -272.526)"/>
+                 <path id="Path_3033" data-name="Path 3033" d="M290.887,213h10.1l.063,0a1.62,1.62,0,0,0,1.587-1.563v-.5a2.458,2.458,0,0,0-.865-1.846c-.187-.2-.42-.454-.717-.824h0l-4.223-5.255a3.959,3.959,0,0,0-3.441-1.694h-4.166a1.682,1.682,0,0,0-1.728,1.514c0,.025,0,.05,0,.075l.013,7.056a3.221,3.221,0,0,0,3.377,3.04Zm2.506-9.3a1.649,1.649,0,0,1,1.58.8l4.224,5.255c.3.375.547.648.738.855h-9.048c-.7,0-.991-.426-.991-.656l-.012-6.256Z" transform="translate(-240.341 -128.227)"/>
+                 <path id="Path_3034" data-name="Path 3034" d="M87.79,220.657v4.453a2.051,2.051,0,0,0,2.049,2.048h2.187v2.185a2.051,2.051,0,0,0,2.049,2.049h4.454a2.053,2.053,0,0,0,2.054-2.049v-2.185h2.182a2.053,2.053,0,0,0,2.054-2.048v-4.453a2.056,2.056,0,0,0-2.054-2.053h-2.182v-2.181a2.056,2.056,0,0,0-2.054-2.053H94.074a2.053,2.053,0,0,0-2.049,2.053V218.6H89.839A2.053,2.053,0,0,0,87.79,220.657Zm2.48.427h3a1.24,1.24,0,0,0,1.24-1.24V216.85h3.6v2.994a1.24,1.24,0,0,0,1.24,1.24h3v3.595h-3a1.24,1.24,0,0,0-1.24,1.24v2.994h-3.6v-2.994a1.24,1.24,0,0,0-1.24-1.24h-3Z" transform="translate(-73.39 -139.141)"/>
+               </g>
+             </svg>
+           </em>
+             <span>Medical Van</span>
+           </a></li>
+  
+           <li><a [class.active]="vehical==='shuttle'" href="javascript:void(0)" (click)="selectVehical($event, 'shuttle')">
+           <em><svg id="shuttle" xmlns="http://www.w3.org/2000/svg" width="89.985" height="46.666" viewBox="0 0 89.985 46.666">
+               <path id="Path_3035" data-name="Path 3035" d="M48.954,48.549V45.908H42.917a2.2,2.2,0,0,1-2.2-2.2V34.9a2.2,2.2,0,0,1,2.2-2.2H62.036V30.059H42.917A4.848,4.848,0,0,0,38.074,34.9v8.8a4.848,4.848,0,0,0,4.843,4.843Zm0,0" transform="translate(-31.383 -24.776)"/>
+               <path id="Path_3036" data-name="Path 3036" d="M129.225,45.907H115.012v2.642h14.213a4.848,4.848,0,0,0,4.843-4.843V34.9a4.848,4.848,0,0,0-4.843-4.843h-1.132V32.7h1.132a2.2,2.2,0,0,1,2.2,2.2v8.8A2.2,2.2,0,0,1,129.225,45.907Zm0,0" transform="translate(-94.798 -24.775)"/>
+               <path id="Path_3037" data-name="Path 3037" d="M380.218,40.762l-6.744-8.8a4.87,4.87,0,0,0-3.845-1.9h-4.084A4.848,4.848,0,0,0,360.7,34.9v8.8a4.849,4.849,0,0,0,4.843,4.843h10.828a4.843,4.843,0,0,0,3.845-7.787Zm-1.871,3.919a2.16,2.16,0,0,1-1.974,1.227H365.546a2.2,2.2,0,0,1-2.2-2.2V34.9a2.2,2.2,0,0,1,2.2-2.2h4.084a2.213,2.213,0,0,1,1.747.862l6.744,8.8a2.16,2.16,0,0,1,.227,2.313Zm0,0" transform="translate(-297.308 -24.776)"/>
+               <path id="Path_3038" data-name="Path 3038" d="M195.9,50.1h-16.73V78.273H164.82v2.642H198.1V78.273h-2.2ZM193.26,78.273H181.814V52.74h4.4V70.085h2.642V52.74h4.4Zm0,0" transform="translate(-135.853 -41.293)"/>
+               <path id="Path_3039" data-name="Path 3039" d="M286.559,178.848H289.2v2.642h-2.642Zm0,0" transform="translate(-236.195 -147.415)"/>
+               <path id="Path_3040" data-name="Path 3040" d="M60.028,234.535l-2.27,1.35a8.365,8.365,0,0,0,2.062,2.336l1.622-2.085A5.722,5.722,0,0,1,60.028,234.535Zm0,0" transform="translate(-47.607 -193.315)"/>
+               <path id="Path_3041" data-name="Path 3041" d="M59.466,170.332A8.374,8.374,0,0,0,51.1,178.7a8.492,8.492,0,0,0,.106,1.336l2.608-.419a5.835,5.835,0,0,1-.073-.917,5.715,5.715,0,1,1,4.11,5.493l-.744,2.535a8.365,8.365,0,1,0,2.356-16.392Zm0,0" transform="translate(-42.12 -140.396)"/>
+               <path id="Path_3042" data-name="Path 3042" d="M379.653,234.535l-2.27,1.35a8.354,8.354,0,0,0,2.062,2.336l1.622-2.085A5.721,5.721,0,0,1,379.653,234.535Zm0,0" transform="translate(-311.057 -193.315)"/>
+               <path id="Path_3043" data-name="Path 3043" d="M379.087,170.332a8.375,8.375,0,0,0-8.365,8.365,8.486,8.486,0,0,0,.106,1.336l2.608-.419a5.833,5.833,0,0,1-.073-.917,5.715,5.715,0,1,1,4.11,5.493l-.743,2.535a8.365,8.365,0,1,0,2.356-16.392Zm0,0" transform="translate(-305.567 -140.396)"/>
+               <path id="Path_3044" data-name="Path 3044" d="M326.267,4.914,329.279,8.9l2.108-1.592-3.013-3.987A8.408,8.408,0,0,0,321.7,0H301.508V2.642H321.7a5.752,5.752,0,0,1,4.566,2.272Zm0,0" transform="translate(-248.517 0)"/>
+               <path id="Path_3045" data-name="Path 3045" d="M2.642,4.843a2.2,2.2,0,0,1,2.2-2.2H50.349V0H4.843A4.848,4.848,0,0,0,0,4.843V26H2.642Zm0,0"/>
+               <path id="Path_3046" data-name="Path 3046" d="M2.642,169.109v-6.136H0v6.136a4.848,4.848,0,0,0,4.843,4.843h.88V171.31h-.88A2.2,2.2,0,0,1,2.642,169.109Zm0,0" transform="translate(0 -134.33)"/>
+               <path id="Path_3047" data-name="Path 3047" d="M474.522,58.65l-3.832-5.072-2.108,1.592,3.832,5.073a5.754,5.754,0,0,1,1.157,3.45v9h-3.962v2.642h3.962v3.61a2.2,2.2,0,0,1-2.2,2.2v2.642a4.848,4.848,0,0,0,4.843-4.843V63.693a8.416,8.416,0,0,0-1.691-5.043Zm0,0" transform="translate(-386.227 -44.162)"/>
+               <path id="Path_3048" data-name="Path 3048" d="M82.223,66.221l-1.867-1.868,1.867-1.867,1.868,1.867Zm3.735-3.736-1.867-1.867L87.4,57.309l1.867,1.868Zm0,0" transform="translate(-66.233 -47.237)"/>
+               <path id="Path_3049" data-name="Path 3049" d="M132.32,66.221l-1.867-1.868,1.867-1.867,1.868,1.867Zm3.736-3.736-1.868-1.867,3.308-3.308,1.867,1.868Zm0,0" transform="translate(-107.526 -47.237)"/>
+             </svg>
+           </em>
+             <span>Shuttle</span>
+           </a></li> -->
+  
+        </ul>
+      </div>
+  
+       <div class="col-md-9 offset-md-3">
+         <p class=" mt-3">Estimated arrival time : <span class="text-primary">{{ totalTime.duration_string }}.</span></p>
+         <button type="button" (click)="bookNow()" class="btn btn-primary mt-3 mb-5"> Book now for ${{ cost }}</button>
+       </div>
+  
+    </div>
+  
+  </div>
+  
+</div>

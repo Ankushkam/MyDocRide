@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 144 144">
+  <g id="play-icon" transform="translate(-1432 -3828)">
+    <g id="Ellipse_51" data-name="Ellipse 51" transform="translate(1432 3828)" fill="none" stroke="#fff" stroke-width="4">
+      <circle cx="72" cy="72" r="72" stroke="none"/>
+      <circle cx="72" cy="72" r="70" fill="none"/>
+    </g>
+    <g id="play-arrow" transform="translate(1477.524 3876.511)">
+      <path id="Path_2660" data-name="Path 2660" d="M51.555,23.573,11.278.333a2.486,2.486,0,0,0-3.722,2.15V49.005a2.486,2.486,0,0,0,3.722,2.15l40.277-23.24A2.52,2.52,0,0,0,51.555,23.573Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>

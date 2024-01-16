@@ -1,0 +1,65 @@
+<ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="large"
+    color="teal"
+    type="ball-clip-rotate-multiple"
+>
+</ngx-spinner>
+
+<div *ngIf="dataLoaded | async">
+  <div class="dashboard_section">
+      <app-navbar [user]="user" (logout)="logout()"></app-navbar>
+      <app-sidebar></app-sidebar>
+
+      <div class="dashboard_content">
+        
+        <h1 class="main_title d-flex justify-content-between" *ngIf="routeName!=='payments' && routeName!=='past-rides-listing'"> {{ title }} 
+          <a [routerLink]="redirectRoute" *ngIf="condition" class="btn btn-primary ml-zero">{{ btnName }}</a>
+        </h1>
+
+        <div *ngIf="view==='payment'">
+          <app-payment *ngIf="routeName==='payments'" [dataLoaded]="dataLoaded" [payments]="payments"></app-payment>
+          <app-add-payment *ngIf="routeName==='add-payment'"></app-add-payment>
+          <app-payment-cards *ngIf="routeName==='payment-cards'"></app-payment-cards>
+          <app-past-ride-listing *ngIf="routeName==='past-rides-listing'" [pastRidesListing]="pastRidesListing" [dataLoaded]="dataLoaded"></app-past-ride-listing>
+          <app-paynow *ngIf="routeName==='checkout'" [dataLoaded]="dataLoaded" [user]="user"></app-paynow>
+          <app-new-request *ngIf="routeName==='notifications'" [user]="user" [dataLoaded]="dataLoaded" [bookings]="bookings"></app-new-request>
+        </div>
+        <div *ngIf="view==='pending'">
+        <app-pending-request-list [dataLoaded]="dataLoaded" [AppointmentList]="AppointmentList" [user]="user"></app-pending-request-list>
+ </div>
+        <div *ngIf="view==='patientlist'">
+          <app-memberlist [dataLoaded]="dataLoaded" [membersList]="membersList" [user]="user"></app-memberlist>
+                </div>
+
+        <div *ngIf="view==='commons'">
+          <div class="shadow_box">
+            <div class="row">
+            <div class="col-lg-3">
+              <div class="grey_box text-center">
+                <app-profile [user]="user" (imageEvent)="image=$event" [dataLoaded]="dataLoaded"></app-profile>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <app-stafflist *ngIf="routeName==='staff-list'" [user]="user" [staffList]="staffList" [dataLoaded]="dataLoaded"></app-stafflist>
+              <app-add-staff *ngIf="routeName==='add-staff'" [user]="user"></app-add-staff>
+              <app-add-member *ngIf="routeName==='add-patient'" [user]="user"></app-add-member>
+              <app-schedule-ride *ngIf="routeName==='schedule-ride'" [user]="user"></app-schedule-ride>
+              <app-driver-arrived *ngIf="routeName==='driver-arrived'" [dataLoaded]="dataLoaded" [patient]="patient" [driver]="driver" (statusChanged)="title=$event"></app-driver-arrived>
+              <app-activerides *ngIf="routeName==='active-rides'" [activeRides]="activeRides" [user]="user" [dataLoaded]="dataLoaded"></app-activerides>
+              <app-pastrides *ngIf="routeName==='past-rides'" [pastRides]="pastRides" [user]="user" [dataLoaded]="dataLoaded"></app-pastrides>
+              <app-edit-profile *ngIf="routeName==='edit-profile'" [user]="user" [dataLoaded]="dataLoaded"></app-edit-profile>
+              <app-settings *ngIf="routeName==='settings'" [user]="user" [dataLoaded]="dataLoaded"></app-settings>
+              <app-help-center *ngIf="routeName==='help-center'" [dataLoaded]="dataLoaded"></app-help-center>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer_section">
+          <p>© 2020 MyDocRide. All rights reserved.</p>
+        </div>
+
+    </div>
+  </div>
+</div>

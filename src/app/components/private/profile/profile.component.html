@@ -1,0 +1,16 @@
+<div *ngIf="dataLoaded | async">
+    <p><flash-messages></flash-messages></p> 
+    <div class="user_img_lg upload_img">
+    <i><input type="file" name="image" (change)="uploadImage($event)"><em class="fa fa-camera"></em></i>
+    <img src="{{ isImageChanged ? image : user.image ? user.image : image }}"/>
+    </div>
+    <h4>Dr. {{ user.first_name | titlecase  }} {{ user.last_name | titlecase  }}</h4>
+    <p><i class="fa fa-envelope"></i> {{ user.email }}</p>
+    <p><i class="fa fa-phone"></i> {{ user.mobile_number ? ' +1 '+user.mobile_number : 'Not provided' }}</p>
+    <p><i class="fa fa-map-marker"></i> 
+        {{ user.street ? user.street : '' }} 
+        {{ user.city ? user.city : '' }} 
+        {{ user.state ? user.state : '' }}
+        {{ user.zipcode ? user.zipcode : '' }}
+    </p>
+</div>

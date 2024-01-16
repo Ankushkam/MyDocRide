@@ -1,0 +1,334 @@
+<div class="welcome_section 100vh">
+
+    <div class="container">
+        <div class="sign_up_form">
+            <div class="row no-gutters">
+                <aside class="col-md-6 mob_none">
+                    <div class="sign_left">
+                        <span class="logo_form" ><img src="assets/images/logo.png" alt="My Doc Ride" /></span>
+                        <h2>Welcome</h2>
+                        <p>
+                            {{ showForgotPasswordForm ? 'Reset your password.' :
+                            userType==='h' ? 'Signup now to reduce patient no shows, increase revenue, and grow your
+                            business.' :
+                            userType==='pc' ? 'Signup now to get your residents or loved ones reliable medical
+                            transportation.' :
+                            'Signup now to increase your medical transportation income up to $1000 per week.' }}
+                        </p>
+                        <a href="/" class="">Go back to home</a>
+                    </div>
+                </aside>
+
+                <aside class="col-md-6">
+                    <div class="signup_form">
+                        <h3>Signup Now !</h3>
+                        <div *ngIf="!showRadios" class="mt-3"></div>
+                        <flash-messages></flash-messages>
+                        <div *ngIf="!showForgotPasswordForm">
+                            <form [formGroup]="registrationForm" novalidate (ngSubmit)="registerUser($event)"
+                                autocomplete="off">
+                                <div id="radiosDiv" class="mb-3">
+                                    <!-- <div *ngIf="showPatientCaregiverRadios" class="radio_option mb-4">
+                                        <label> <input type="radio" formControlName="type" name="type" value="Rider"/> I am a Patient</label>
+                                        <label> <input type="radio" formControlName="type" name="type" value="CG"/> I am a Caregiver</label>
+                                        <div class="mb-3">
+                                            <small class="text-danger" *ngIf="registrationForm.get('type').errors?.serverError">
+                                                {{ registrationForm.get('type').errors?.serverError }}
+                                            </small>
+                                        </div>
+                                    </div> -->
+                                    <div *ngIf="showCompanyDriverRadios" class="radio_option mb-4">
+                                        <label> <input type="radio" formControlName="type" name="type" value="Driver" />
+                                            Individual
+                                            (1 Driver)</label>
+                                        <label> <input type="radio" formControlName="type" name="type"
+                                                value="Company" /> Company
+                                            (More Than 1 driver)</label>
+                                        <div class="mb-3">
+                                            <small class="text-danger"
+                                                *ngIf="registrationForm.get('type').errors?.serverError">
+                                                {{ registrationForm.get('type').errors?.serverError }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="registrationForm.get('type').value!=='Company'">
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div id="fnameDiv" class="mb-3">
+                                                <input type="text" formControlName="first_name" id="first_name"
+                                                    placeholder="First Name" class="form-control"
+                                                    [class.is-invalid]="registrationForm.get('first_name').invalid && registrationForm.get('first_name').touched"
+                                                    [class.is-valid]="registrationForm.get('first_name').valid">
+                                                <div class="mb-3"
+                                                    *ngIf="registrationForm.get('first_name').invalid && registrationForm.get('first_name').touched">
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('first_name').errors?.required">First
+                                                        name
+                                                        is
+                                                        required</small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('first_name').errors?.pattern">First
+                                                        name
+                                                        can contain
+                                                        only alphabets</small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('first_name').errors?.maxlength">First
+                                                        name
+                                                        cannot be
+                                                        greater than 25 characters</small>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('first_name').errors?.serverError">
+                                                        {{ registrationForm.get('first_name').errors?.serverError }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div id="lnameDiv" class="mb-3">
+                                                <input type="text" formControlName="last_name" id="last_name"
+                                                    placeholder="Last Name" class="form-control"
+                                                    [class.is-invalid]="registrationForm.get('last_name').invalid && registrationForm.get('last_name').touched"
+                                                    [class.is-valid]="registrationForm.get('last_name').valid">
+                                                <div
+                                                    *ngIf="registrationForm.get('last_name').invalid && registrationForm.get('last_name').touched">
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('last_name').errors?.required">Last
+                                                        name is
+                                                        required</small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('last_name').errors?.pattern">Last
+                                                        name can
+                                                        contain only
+                                                        alphabets</small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('last_name').errors?.maxlength">Last
+                                                        name
+                                                        cannot be
+                                                        greater than 25 characters</small>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <small class="text-danger"
+                                                        *ngIf="registrationForm.get('last_name').errors?.serverError">
+                                                        {{ registrationForm.get('last_name').errors?.serverError }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="phoneDiv" class="mb-3">
+                                    <input type="text" formControlName="mobile_number" class="form-control"
+                                        placeholder="Phone Number"
+                                        [class.is-invalid]="registrationForm.get('mobile_number').invalid && registrationForm.get('mobile_number').touched"
+                                        [class.is-valid]="registrationForm.get('mobile_number').valid" maxlength="10">
+                                    <small style="color: #d6d1d1;">*Do not add country code</small>
+                                    <div
+                                        *ngIf="registrationForm.get('mobile_number').invalid && registrationForm.get('mobile_number').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('mobile_number').errors?.required">Phone number
+                                            is
+                                            required</small>
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('mobile_number').errors?.pattern">Invalid phone
+                                            number</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('mobile_number').errors?.serverError">
+                                            {{ registrationForm.get('mobile_number').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div *ngIf="registrationForm.get('type').value!=='Rider' && registrationForm.get('type').value!=='Driver'"
+                                    id="companyDiv" class="mb-3">
+                                    <input type="text" formControlName="company" id="company" placeholder="Company Name"
+                                        class="form-control"
+                                        [class.is-invalid]="registrationForm.get('company').invalid && registrationForm.get('company').touched"
+                                        [class.is-valid]="registrationForm.get('company').valid">
+                                    <div
+                                        *ngIf="registrationForm.get('company').invalid && registrationForm.get('company').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('company').errors?.required">Company
+                                            name is required</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('company').errors?.serverError">
+                                            {{ registrationForm.get('company').errors?.serverError }}
+                                        </small>
+                                        <small class="text-danger" *ngIf="isConflict">
+                                            {{ conflictMessage }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="emailDiv" class="mb-3">
+                                    <input type="email" formControlName="email" id="email" placeholder="Email Address"
+                                        class="form-control"
+                                        [class.is-invalid]="registrationForm.get('email').invalid && registrationForm.get('email').touched"
+                                        [class.is-valid]="registrationForm.get('email').valid">
+                                    <div class="mb-3"
+                                        *ngIf="registrationForm.get('email').invalid && registrationForm.get('email').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('email').errors?.required">Email is
+                                            required</small>
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('email').errors?.email">Invalid
+                                            email-address</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('email').errors?.serverError">
+                                            {{ registrationForm.get('email').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="passwordDiv" class="mb-3">
+                                    <input type="password" formControlName="password" id="password"
+                                        placeholder="Password" class="form-control"
+                                        [class.is-invalid]="registrationForm.get('password').invalid && registrationForm.get('password').touched"
+                                        [class.is-valid]="registrationForm.get('password').valid">
+                                    <div class="mb-3"
+                                        *ngIf="registrationForm.get('password').invalid && registrationForm.get('password').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password').errors?.required">Password is
+                                            required</small>
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password').errors?.minlength">Password should
+                                            be of minimum
+                                            8 characters</small>
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password').errors?.maxlength">Password can be
+                                            of maximum 50
+                                            characters</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password').errors?.serverError">
+                                            {{ registrationForm.get('password').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="cpasswordDiv" class="mb-3">
+                                    <input type="password" formControlName="password_confirmation"
+                                        id="password_confirmation" placeholder="Confirm Password" class="form-control"
+                                        [class.is-invalid]="registrationForm.get('password_confirmation').invalid && registrationForm.get('password_confirmation').touched"
+                                        [class.is-valid]="registrationForm.get('password_confirmation').valid">
+                                    <div class="mb-3"
+                                        *ngIf="registrationForm.get('password_confirmation').invalid && registrationForm.get('password_confirmation').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password_confirmation').errors?.required">Password
+                                            confirmation is required</small>
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password_confirmation').errors?.password_confirmation">The
+                                            password confirmation does not match</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('password_confirmation').errors?.serverError">
+                                            {{ registrationForm.get('password_confirmation').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="termsofserviceDiv" class="mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            formControlName="terms_of_service" id="terms_of_service"
+                                            [class.is-invalid]="registrationForm.get('terms_of_service').invalid && registrationForm.get('terms_of_service').touched"
+                                            [class.is-valid]="registrationForm.get('terms_of_service').valid" required>
+                                        <label class="custom-control-label text-left" for="terms_of_service"> I confirm
+                                            that I have
+                                            read, consent and agree to MyDocRide LLC <a routerLink="/terms-of-service"
+                                                target="_blank"> Terms Of Service</a> and
+                                            <a routerLink="/privacy-policy" target="_blank">Privacy Policy</a></label>
+                                    </div>
+                                    <div class="mb-3"
+                                        *ngIf="registrationForm.get('terms_of_service').invalid && registrationForm.get('terms_of_service').touched">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('terms_of_service').errors?.required">Terms of
+                                            service is
+                                            required</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-danger"
+                                            *ngIf="registrationForm.get('terms_of_service').errors?.serverError">
+                                            {{ registrationForm.get('terms_of_service').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div *ngIf="registrationForm.get('type').value==='Company'" class="mb-3">
+                                    <input class="form-control" ngx-google-places-autocomplete [options]='options'
+                                        formControlName="address" name="address" #placesRef="ngx-places"
+                                        (onAddressChange)="getAddress($event)" placeholder="Enter Your Location" />
+                                </div>
+                                <p class="text-center">
+                                    <button type="submit" class="btn btn-primary">Signup</button>
+                                </p>
+                            </form>
+                            <div *ngIf="registrationForm.get('type').value !== 'Company'">
+                                <p class="text-center mb-4" *ngIf="showResendLink">
+                                    Didn't get email? <a href="javascript:void(0)" (click)="resendEmail()">Resend
+                                        again.</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showForgotPasswordForm">
+                            <form class="mt-4" [formGroup]="forgotPasswordForm" novalidate
+                                (ngSubmit)="forgotPassword($event)">
+                                <div id="passwordDiv" class="mb-3">
+                                    <input type="password" formControlName="password" id="password"
+                                        placeholder="New Password" class="form-control"
+                                        [class.is-invalid]="forgotPasswordForm.get('password').invalid && forgotPasswordForm.get('password').touched"
+                                        [class.is-valid]="forgotPasswordForm.get('password').valid">
+                                    <div class="mb-3"
+                                        *ngIf="forgotPasswordForm.get('password').invalid && forgotPasswordForm.get('password').touched">
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password').errors?.required">Password is
+                                            required</small>
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password').errors?.minlength">Password should
+                                            be of
+                                            minimum 8 characters</small>
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password').errors?.maxlength">Password can be
+                                            of maximum
+                                            50 characters</small>
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password').errors?.serverError">
+                                            {{ forgotPasswordForm.get('password').errors?.serverError }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div id="cpasswordDiv" class="mb-3">
+                                    <input type="password" formControlName="password_confirmation"
+                                        id="password_confirmation" placeholder="Confirm Password" class="form-control"
+                                        [class.is-invalid]="forgotPasswordForm.get('password_confirmation').invalid && forgotPasswordForm.get('password_confirmation').touched"
+                                        [class.is-valid]="forgotPasswordForm.get('password_confirmation').valid">
+                                    <div class="mb-3"
+                                        *ngIf="forgotPasswordForm.get('password_confirmation').invalid && forgotPasswordForm.get('password_confirmation').touched">
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password_confirmation').errors?.required">Password
+                                            confirmation is required</small>
+                                        <small class="text-danger"
+                                            *ngIf="forgotPasswordForm.get('password_confirmation').errors?.password_confirmation">
+                                            The password confirmation does not match</small>
+                                    </div>
+                                </div>
+                                <p class="text-center mb-4">    
+                                    <button type="submit" class="btn btn-primary"
+                                        [disabled]="!forgotPasswordForm.valid">Update</button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="teal" type="ball-clip-rotate-multiple">
+</ngx-spinner>

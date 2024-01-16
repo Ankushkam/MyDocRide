@@ -1,0 +1,16 @@
+.table-not-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent!important;
+border-color: transparent!important;
+border: none!important;
+border-top: transparent!important;}
+
+.table-plain tbody tr,
+.table-plain tbody tr:hover,
+.table-plain tbody td {
+  background-color:transparent;
+  border:none;
+}
+.borderless td, .borderless th {
+    border: none;
+}
+

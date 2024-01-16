@@ -1,0 +1,21 @@
+<nav class="navbar fixed_header_section">
+    <a href="javascript:void(0)" class="logo_small"><img href="javascript:void(0)" src="assets/images/logo-small-new.svg"/><span class="logo-span">MyDocRide</span></a>
+
+    <div class="dropdown user_dropdown ml-auto">
+     <span class="user_profile">
+      <ngx-avatar *ngIf="user.image===null" [name]="user.first_name" size="40">
+      </ngx-avatar>
+      <img *ngIf="user.image!==null" [src]="user.image" width="30" height="30"/>
+      </span>
+     <button class="btn dropdown-toggle font15" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       Hi! {{ user.first_name | titlecase }}
+    </button>
+     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+       <a class="dropdown-item" routerLink="/dashboard/edit-profile">Edit Profile</a>
+       <a class="dropdown-item" routerLink="/dashboard/settings">Setting</a>
+       <a class="dropdown-item" href="javascript:void(0)" (click)="doLogout($event)">Logout</a>
+     </div>
+   </div>
+
+   <i class="fa fa-bars menu_icon" (click)=toggleSideBar()></i>
+</nav>

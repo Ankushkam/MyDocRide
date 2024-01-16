@@ -1,0 +1,106 @@
+<div *ngIf="dataLoaded | async">
+  <div class="pad_top_right"> 
+    <div class="card shadow-none member_block"> 
+      <h5 class="card-header"> 
+        <span class="member_img">
+            <ngx-avatar *ngIf="patient.image===null" [name]="patient.name" size="51">
+            </ngx-avatar>
+            <img *ngIf="patient.image!==null" [src]="patient.image"/>
+        </span>{{ patient.name | titlecase }}
+        <em>Patient</em>
+      </h5>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="ride_view">
+              
+              <agm-map [zoom]="14" [zoomControl]="false" [streetViewControl]="false" [disableDoubleClickZoom]="true">
+                <agm-marker [latitude]="patient.origin.pickup_latitude" [longitude]="patient.origin.pickup_longitude"></agm-marker>
+                <agm-direction *ngIf="patient.origin"
+                    [origin]="patient.origin" 
+                    [destination]="patient.destination"
+                    [renderOptions]="renderOptions"
+                    [markerOptions]="markerOptions"
+                    [travelMode]="travelMode"
+                    [drivingOptions]="drivingOptions"
+                ></agm-direction>
+              </agm-map>
+
+            </div> 
+            <div class="location_view">
+              <span><i class="fa fa-map-marker"></i>{{ patient.pickup_location }}</span>
+              <span><i class="fa fa-map-marker red_text"></i>{{ patient.drop_location }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-6 ride_details"> 
+              <div class="driver_info">
+                <i class="member_img" *ngIf="driver" >
+                  <ngx-avatar *ngIf="driver.image===null" [name]="driver.first_name+' '+driver.last_name" size="38">
+                  </ngx-avatar>
+                  <img *ngIf="driver.image!==null" [src]="driver.image"/>
+                </i>
+
+                <div class="d-flex justify-content-between" *ngIf="driver">
+                  <span><em>Driver</em>{{ driver.first_name | titlecase }} {{ driver.last_name | titlecase }}</span> 
+                  <span>
+                    <a href="#" class="mr-2"><img src="assets/images/call.svg"/></a>
+                    <a href="#"><img src="assets/images/chat.svg"/></a>
+                  </span>
+                </div> 
+
+                
+              <div class="d-flex justify-content-between ride_info mt-3">
+                <!-- <i><img [src]="'assets/images/'+patient.ride_type+'.svg'"/></i> -->
+                <span> 
+                  <em>{{ patient.car_name | titlecase }}</em></span>
+                  <!-- <em>{{ driver.vehicle.vehicle_name | titlecase }}</em>{{ driver.vehicle.vehicle_number | uppercase }} </span>-->
+                <span class="text-right">
+                  <em class="text-dark">{{ patient.created_at | date:'shortDate' }}</em>
+                  <em class="text-dark">{{ patient.created_at | date:'shortTime' }}</em>
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-between ride_info mt-3">
+                <i><img src="assets/images/fare.svg"/></i>
+                <span> 
+                  <em>Total Fare</em>$ {{ patient.fare_estimation }} </span> 
+                <span class="text-right">
+                  <em class="text-dark"><img src="assets/images/location_point.svg"/> {{ patient.distance }} Miles</em>
+                  <em class="text-dark"><img src="assets/images/time.svg"/> {{ patient.total_time }}</em>
+                </span>
+              </div> 
+              </div>
+
+              <div *ngIf="!showPayNow">
+                <a href="#" class="btn btn-primary btn-lg mt-3 col-md-5 col-sm-5 col-lg-5 col-xl-5 mr-2" data-toggle="modal" data-target="#confirmModal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-success btn-lg mt-3 col-sm-6 col-md-6 col-lg-6 col-xl-6" (click)="checkStatus($event, patient.id)">Check Status</a>
+              </div>
+              <div *ngIf="showPayNow">
+                <a href="javascript:void(0)" (click)="payNow($event, patient.id, patient.amount_paid_to_driver)" class="btn btn-primary btn-lg mt-3 col-md-5 col-sm-5 col-lg-5 col-xl-5 mr-2">Pay Now</a>
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg payment_popup" role="document">
+    <div class="modal-content"> 
+      <div class="modal-body"> 
+      <div class="thick_section p-0 text-center"> 
+        <h5 class="modal-title" id="exampleModalLabel">Do you want to cancel this ride</h5>
+        <p>Please confirm by clicking on the yes button to cancel this ride</p>
+      </div>
+      <hr class="mb-4"/>
+        <div class="text-center">
+          <button type="button" class="btn btn-success mr-2 btn-success2 rounded min_width150" (click)="cancelRide($event, patient.id, patient.doctor_id)">Yes</button>
+          <button type="button" class="btn btn-outline-dark rounded min_width150" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

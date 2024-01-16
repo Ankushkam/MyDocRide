@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-md-6">
+        <div style="margin-top: 10px;">
+            <h3>Change Password</h3>
+        </div>
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <div>
+                <div class="form-group">
+                    <label>Current Password</label><br>
+                    <input type="password" formControlName="current_password" name="current_password" class="form-control"
+                        [class.is-invalid]="passwordForm.get('current_password').touched && passwordForm.get('current_password').invalid"
+                        [class.is-valid]="passwordForm.get('current_password').valid"
+                    >
+                    <div *ngIf="passwordForm.get('current_password').touched && passwordForm.get('current_password').invalid">
+                        <small class="text-danger" *ngIf="passwordForm.get('current_password').errors?.required">Current password is required.</small>
+                    </div>
+                    <div *ngIf="passwordErrorServer">
+                        <small class="text-danger">{{ passwordErrorMsg }}</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>New Password</label><br>
+                    <input id="input" type="password" formControlName="password" name="password"  class="form-control"
+                        [class.is-invalid]="passwordForm.get('password').touched && passwordForm.get('password').invalid"
+                        [class.is-valid]="passwordForm.get('password').valid"
+                    >
+                    <div *ngIf="passwordForm.get('password').touched && passwordForm.get('password').invalid">
+                        <small class="text-danger" *ngIf="passwordForm.get('password').errors?.required">Password is required.</small>
+                        <small class="text-danger" *ngIf="passwordForm.get('password').errors?.minlength">Password must be of minimum 8 characters.</small>
+                    </div>
+                    <div *ngIf="passwordErrorClient">
+                        <small class="text-danger">{{ passwordErrorMsg }}</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label><br>
+                    <input id="input" type="password" formControlName="password_confirmation" name="password_confirmation"  class="form-control"
+                        [class.is-invalid]="passwordForm.get('password_confirmation').touched && passwordForm.get('password_confirmation').invalid"
+                        [class.is-valid]="passwordForm.get('password_confirmation').valid"
+                    >
+                    <div *ngIf="passwordForm.get('password_confirmation').touched && passwordForm.get('password_confirmation').invalid">
+                        <small class="text-danger" *ngIf="passwordForm.get('password_confirmation').errors?.required">Password is required.</small>
+                        <small class="text-danger" *ngIf="passwordForm.get('password_confirmation').errors?.password_confirmation">Password didn't match.</small>
+                    </div>
+                </div>
+                <p *ngIf="isPasswordUpdate">
+                    <span class="text-success">Password updated successfully</span>
+                </p>
+                <p>
+                    <button type="submit" class="btn btn-success" [disabled]="passwordForm.invalid">Update Password</button>
+                </p>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div style="margin-top: 10px;">
+            <h3>Change Facility Name</h3>
+        </div>
+        <form [formGroup]="companyForm" (ngSubmit)="updateCompany()">
+            <div class="form-group">
+                <label>Hospital Name</label>
+                <input type="text" formControlName="hospital_name" name="hospital_name" class="form-control"
+                    [class.is-invalid]="companyForm.get('hospital_name').touched && companyForm.get('hospital_name').invalid"
+                    [class.is-valid]="companyForm.get('hospital_name').valid"
+                >
+                <div *ngIf="companyForm.get('hospital_name').touched && companyForm.get('hospital_name').invalid">
+                    <small class="text-danger" *ngIf="companyForm.get('hospital_name').errors?.required">Hospital name is required.</small>
+                    <small class="text-danger" *ngIf="companyForm.get('hospital_name').errors?.maxlength">Hospital name cannot be more than 50 characters.</small>
+                </div>
+            </div>
+            <p>
+                <button type="submit" class="btn btn-success" [disabled]="companyForm.invalid">Update Company</button>
+            </p>
+        </form>
+    </div>
+</div>

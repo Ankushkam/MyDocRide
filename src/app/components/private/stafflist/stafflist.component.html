@@ -1,0 +1,16 @@
+<div *ngIf="dataLoaded | async">
+
+  <div class="pad_top_right">
+    <ul class="staff_list">
+      <li *ngFor="let staffMember of staffList">
+        <a href="javascript:void(0)" (click)="showPatients($event, staffMember.id)">
+          <span><img src="{{ staffMember.image ? staffMember.image : 'assets/images/doctorlogo.png' }}"/></span>
+          <em>Dr. {{ staffMember.first_name | titlecase  }} {{ staffMember.last_name | titlecase }}</em>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<app-patients-list></app-patients-list>

@@ -1,0 +1,527 @@
+<div class="header_section">
+  <header>
+    <!-- <div class="top_bar">
+    <span><img src="assets/images/phone-receiver.svg" alt="Home"/>Ph: +123 4567 890</span>
+  </div> -->
+    <div class="container">
+      <a class="navbar-brand" href="javascript:void(0)"><img src="assets/images/logo.png" alt="Home" /></a>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="transportationproviders">Transportation Providers<span
+                  class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="caregiver">Caregivers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" (click)="showModal($event, true)">Login</a>
+            </li>
+            <li><a href="signup/healthcare" class="btn btn-primary my-2 my-sm-0 my-lg-0">Sign Up</a></li>
+          </ul>
+        </div>
+        <a href="javascript:void(0)" (click)="showModal($event, true)"
+          class="btn btn-primary login my-2 my-sm-0 my-lg-0">Login</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="banner"
+    style="background:linear-gradient(rgba(0,0,0, .5), rgba(0,0,0, 0.5)),url(../../../../assets/images/Photo_2.jpg) no-repeat top center;">
+    <div class="container">
+      <div class="banner_content">
+        <!-- <h1>Are you tired of losing revenue due to patient no shows?</h1> -->
+        <h1><span>Increase revenue</span>by reducing patient no shows</h1>
+        <p>MyDocRide provides on demand medical transportation which results in more revenue, less missed appointments,
+          and improved patient outcomes.</p>
+        <!-- <ul>
+        <li>HIPAA Compliant</li>
+        <li>Reduce No Shows</li>
+      </ul> -->
+        <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free">Free Health Provider Sign Up</a>
+        <div class="app_store">
+          <a href="#"><img src="assets/images/app_store_btn.png" alt="App Store" /></a>
+          <a href="#"><img src="assets/images/play_store_btn.png" alt="Google Play" /></a>
+        </div>
+
+      </div>
+    </div>
+    
+    <div class="category_menu">
+      <a href="caregiver" class="content_arrow"><i><img src="assets/images/caregive_icon.png" alt="App Store"
+            width="45px" /></i> Caregivers</a>
+      <a href="transportationproviders" class="content_arrow"><i><img src="assets/images/ambulance_icon.png"
+            alt="Transportation" width="45px" /></i> Transportation providers</a>
+    </div>
+    <!-- <a href="#weWork" class="down_arrow"><img src="assets/images/arrow-up.svg" /></a> -->
+  </div>
+
+  <!-- Pop up Modal -->
+
+  <ng-template #mymodal let-modal>
+    <div class="front_popup">
+      <button type="button" class="close_btn" (click)="modal.dismiss('Cross click')">
+        <svg version="1.1" id="Capa_1"
+          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          viewBox="0 0 47.971 47.971" style="enable-background:new 0 0 47.971 47.971;" xml:space="preserve">
+          <g>
+            <path d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
+           c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242
+           C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879
+           s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z" fill="#fff" />
+          </g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+          <g></g>
+        </svg></button>
+
+      <div class="flash_message">
+        <flash-messages></flash-messages>
+      </div>
+
+      <div class="modal-image"><img src="assets/images/email_popup_image.jpg" alt="" class="img-fluid" /></div>
+
+      <div class="form">
+        <h2 class="modal-title">Free PDF with 3 ways to <br/>grow your medical business</h2>
+        <form [formGroup]="emailForm" (ngSubmit)="submitForm()">
+          <div class="form-group">
+            <input type="email" formControlName="email" id="email" placeholder="Enter your email" class="form-control"
+              [class.is-invalid]="emailForm.get('email').invalid && emailForm.get('email').touched"
+              [class.is-valid]="emailForm.get('email').valid">
+
+            <div class="mt-2" *ngIf="emailForm.get('email').invalid && emailForm.get('email').touched">
+              <small class="text-danger" *ngIf="emailForm.get('email').errors?.required">Email is required</small>
+              <small class="text-danger" *ngIf="emailForm.get('email').errors?.email">Invalid email-address</small>
+            </div>
+            <div class="mt-2" *ngIf="emailForm.get('email').errors?.serverError">
+              <small class="text-danger">{{ emailForm.get('email').errors?.serverError }}</small>
+            </div>
+
+          </div>
+
+          <div class="form-button text-center">
+            <button class="btn btn-primary btn-block w-100" [disabled]="!emailForm.valid">Yes I want to increase revenue by reducing patient no shows</button>
+            <button type="button" class="btn btn-small mt-3" (click)="modal.dismiss('Cross click')">No
+              I am fine with patients not showing up for appointments</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </ng-template>
+</div>
+
+<section class="work_sec" id="weWork">
+  <div class="container">
+    <div class="work_sec_wrap text-center">
+      <h2>We Work With</h2>
+      <ul class="check_list list-group">
+        <li>Hospitals</li>
+        <li>Surgical Centers</li>
+        <li>Dialysis Centers</li>
+        <li>Clinics</li>
+        <li>Medical Offices</li>
+        <li>Imaging and Radiology Centers</li>
+        <li>Orthopedic and Rehab Centers</li>
+      </ul>
+      <p class="my-4"><b>Anyone who cares for seniors, disabled, or the special needs population</b></p>
+      <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free">Free Health Provider Sign Up</a>
+    </div>
+  </div>
+</section>
+<!-- End We Work With -->
+
+<section class="frust_sec light_green pb-0">
+  <div class="container-fluid">
+    <div class="frust_wrap text-center">
+      <h2>Have You Been Frustrated By</h2>
+
+      <div class="row align-items-end mt-4 flex-md-row-reverse">
+        <div class="col-lg-7 mb-4">
+          <ul class="check_list list-group">
+            <li>Patients not showing up to appointments</li>
+            <li>Not being able to fill a last minute cancellation</li>
+            <li>Inability to grow your practice</li>
+            <li>Feeling like things are out of your control</li>
+          </ul>
+          <p class="my-4"><strong>MyDocRide reduces missed appointments, grows your practice,<br />and puts you back in
+              control</strong>
+          </p>
+          <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free">Free Health Provider Sign Up</a>
+        </div>
+
+        <div class="col-lg-5">
+          <figure class="mb-md-0"><img src="../../../../assets/images/appointment_pic.svg" alt="Appointments"
+              class="img-fluid" /></figure>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Have You Been Frustrated By -->
+
+<section class="appointment_section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2>What Missed Appointments<br />are Really Costing You</h2>
+    </div>
+    <div class="row align-items-center">
+
+      <div class="col-md-7">
+        <div class="row rangle_blocks">
+          <div class="col-md-12">
+            <div class="range_box">
+              <label>Patient Appointments (Monthly)</label>
+              <!-- class="progress" -->
+              <!-- <div type="range" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> -->
+              <p-slider [(ngModel)]="appt" [style]="{'width':'100%'}" [min]="0" [max]="15000"
+                (onChange)="calcRevenue($event, 'appt')" [step]="1"></p-slider>
+              <span class="calc_value">{{appt}}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="range_box">
+              <label>Revenue per Appointment ($ USD)</label>
+              <!-- class="progress" -->
+              <!-- <div type="range" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> -->
+              <p-slider [(ngModel)]="revenue" [style]="{'width':'100%'}" [min]="0" [max]="5000"
+                (onChange)="calcRevenue($event, 'rev')" [step]="5"></p-slider>
+              <span class="calc_value">${{revenue | number}}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="range_box">
+              <label>Current Patient No-Shows (% Monthly)</label>
+              <!-- class="progress" -->
+              <!-- <div type="range" class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> -->
+              <p-slider [(ngModel)]="noshow" [style]="{'width':'100%'}" [min]="0" [max]="100"
+                (onChange)="calcRevenue($event, 'noshow')"></p-slider>
+              <span class="calc_value">{{noshow}}%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-5 text-center">
+        <h6>Here’s your increased revenue with MyDocRide
+          <span>${{totalrevenue | number}}</span>
+        </h6>
+        <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free mt-3">Free Health Provider Sign Up</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- End Appointment Sec -->
+
+<section class="hippa_compliant">
+  <div class="container">
+    <div class="video_block">
+
+      <div class="video_description">
+        <h2>MyDocRide will get patientsto their appointments with our
+          <span>safe, reliable, and HIPAA compliant platform.</span>
+        </h2>
+      </div>
+
+      <div class="video_image">
+        <video controls #myVideo style="width:100%; height: 100%;" poster="assets/images/videoPanel.png">
+          <source src="assets/videos/mydocridevideo.mp4" type="video/mp4">
+        </video>
+        <div [hidden]="hidePlay" class="playpause" (click)="playPause()">
+          <i><img src="../../../../assets/icons/play-btn.svg" alt="Play Button" width="20px" /></i>
+        </div>
+      </div>
+
+      <div class="w-100 text-center mt-4">
+        <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free">Free Health Provider Sign Up</a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<!-- End  -->
+
+<section class="how_it_work">
+  <div class="container-fluid">
+    <div class="text-center">
+      <h2>How it Works</h2>
+      <h4 class="sub_title">For Health Care Providers</h4>
+    </div>
+    <ul class="process_view">
+      <li class="step">
+        <span><img src="assets/images/log-in.svg" /></span>
+        <p>Sign Up as a HCP</p>
+      </li>
+
+      <li class="plus_icon">
+        <span><img src="assets/images/plus_line2.svg" /></span>
+      </li>
+
+      <li class="step">
+        <span><img src="assets/images/timer.svg" /></span>
+        <p>Schedule Patient Ride</p>
+      </li>
+
+      <li class="plus_icon">
+        <span><img src="assets/images/plus_line.svg" /></span>
+      </li>
+
+      <li class="step_3rd">
+        <span><img src="assets/images/ride.svg" /></span>
+        <p>Patient picked up by a Medicaid Certified Driver</p>
+      </li>
+
+      <li class=" ">
+        <span><img src="assets/images/equal.svg" /></span>
+      </li>
+
+      <li class="last_step">
+        <span><img src="assets/images/patient.svg" /></span>
+        <p>Happy & Healthy Patient</p>
+      </li>
+
+    </ul>
+
+    <p class="text-center">
+      <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free mt-5">Free Health Provider Sign Up</a>
+    </p>
+
+  </div>
+</section>
+<!-- End How it work Section -->
+
+<section class="mission_sec light_green">
+  <div class="container">
+
+    <div class="row align-items-center flex-md-row-reverse">
+      <div class="col-md-6 text-left py-4">
+        <h2 class="mb-3">Our Mission</h2>
+        <p>At <strong>MyDocRide</strong> we know you want to provide the highest level of care for your
+          patients. In order to do that you need patients to show up to their appointments. Currently many seniors and
+          disabled people struggle to get to their necessary appointments, which makes you feel like you could do more.
+          No one should have to deal with transportation as a barrier to their medical needs.</p>
+        <p>We understand how you feel and we are here to help, that's why we created <strong>MyDocRide</strong>. The
+          medical provider schedules the ride, the patient is taken to their appointment, and the driver is paid.</p>
+        <p><a href="signup/healthcare">Sign up</a> now to improve your patients' health and reduce the
+          amount of people missing their appointments.</p>
+        <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free">Free Health Provider Sign Up</a>
+      </div>
+      <div class="col-md-6">
+        <figure class="mt-4 my-md-0"><img src="../../../../assets/images/mission_pic.svg" alt="" class="img-fluid" />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Mission Sec -->
+
+<section class="client_testimonial">
+  <div class="container-fluid px-0">
+    <div class="row no-gutters">
+      <div class="col-md-6">
+        <figure class="rht_radi_pic">
+          <img src="assets/images/Photo_3.jpg" alt="image" class="img-fluid" />
+        </figure>
+      </div>
+      <div class="col-md-6 d-flex">
+        <div class="container_fluid text-center client_testimonial_center">
+          <h2>What Our Clients Say</h2>
+
+          <p class="comma"><i class="fa fa-quote-left" aria-hidden="true"></i>Needless to say we are extremely satisfied
+            with the results. After using MyDocRide my business skyrocketed! I will definitely continue to being a
+            user.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+
+          <!-- <div class="user_profile mt-4"><img src="assets/images/user.jpg"/></div> -->
+          <p class="clientName"><b>Clara L.</b></p>
+
+          <p class="text-center mt-5">
+            <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free my-3">Free Health Provider Sign Up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact_section">
+  <!-- <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.598681423637!2d-92.04552358540208!3d30.21999961721393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86249c6c3881c693%3A0x1c87dc086714579f!2s537%20Cajundome%20Blvd%2C%20Lafayette%2C%20LA%2070506%2C%20USA!5e0!3m2!1sen!2sin!4v1586407245392!5m2!1sen!2sin" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-5">
+        <figure><img src="../../../../assets/images/contact_us.svg" alt="" class="img-fluid" /></figure>
+      </div>
+      <div class="col-md-7">
+        <div class="card">
+          <div class="card-body get_in_touch">
+            <h3>Get In Touch</h3>
+            <flash-messages></flash-messages>
+            <form class="" [formGroup]="getInTouchForm" novalidate (ngSubmit)="getInTouch($event)">
+
+              <div class="form-row">
+                <div class="col-sm-6 form-group">
+                  <label>First Name</label>
+                  <input type="text" name="fname" formControlName="fname" class="form-control" placeholder=""
+                    [class.is-invalid]="getInTouchForm.get('fname').invalid && getInTouchForm.get('fname').touched"
+                    [class.is-valid]="getInTouchForm.get('fname').valid">
+                  <div *ngIf="getInTouchForm.get('fname').invalid && getInTouchForm.get('fname').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('fname').errors?.required">First name is
+                      required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('fname').errors?.pattern">First name can
+                      contain
+                      only alphabets</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('fname').errors?.maxlength">First name cannot
+                      be
+                      greater than 25 characters</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 form-group">
+                  <label>Last Name</label>
+                  <input type="text" name="lname" formControlName="lname" class="form-control" placeholder=""
+                    [class.is-invalid]="getInTouchForm.get('lname').invalid && getInTouchForm.get('lname').touched"
+                    [class.is-valid]="getInTouchForm.get('lname').valid">
+                  <div *ngIf="getInTouchForm.get('lname').invalid && getInTouchForm.get('lname').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('lname').errors?.required">Last name is
+                      required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('lname').errors?.pattern">Last name can contain
+                      only alphabets</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('lname').errors?.maxlength">Last name cannot be
+                      greater than 25 characters</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-sm-6 form-group">
+                  <label>Email</label>
+                  <input type="email" formControlName="email" class="form-control" placeholder=""
+                    [class.is-invalid]="getInTouchForm.get('email').invalid && getInTouchForm.get('email').touched"
+                    [class.is-valid]="getInTouchForm.get('email').valid">
+                  <div *ngIf="getInTouchForm.get('email').invalid && getInTouchForm.get('email').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('email').errors?.required">Email is
+                      required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('email').errors?.email">Invalid
+                      email-address</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 form-group">
+                  <label>Phone Number</label>
+                  <input type="number" formControlName="phone_number" maxlength="10" class="form-control" placeholder=""
+                    [class.is-invalid]="getInTouchForm.get('phone_number').invalid && getInTouchForm.get('phone_number').touched"
+                    [class.is-valid]="getInTouchForm.get('phone_number').valid">
+                  <small style="color: grey;">*Do not add country code</small>
+                  <div *ngIf="getInTouchForm.get('phone_number').invalid && getInTouchForm.get('phone_number').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('phone_number').errors?.required">Phone number
+                      is
+                      required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('phone_number').errors?.minlength">Invalid
+                      phone
+                      number</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-sm-6 form-group">
+                  <label>State</label>
+                  <select name="state" formControlName="state" class="form-control"
+                    [class.is-invalid]="getInTouchForm.get('state').invalid && getInTouchForm.get('state').touched"
+                    [class.is-valid]="getInTouchForm.get('state').valid">
+                    <option value="" disabled>Select State</option>
+                    <option *ngFor="let state of states" [value]="state.Code">
+                      {{ state.State }}
+                    </option>
+                  </select>
+                  <div *ngIf="getInTouchForm.get('state').invalid && getInTouchForm.get('state').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('state').errors?.required">Please select a
+                      state</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('state').errors?.state">Invalid state
+                      selected</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 form-group">
+                  <label>City</label>
+                  <input type="text" name="city" formControlName="city" class="form-control" placeholder=""
+                    [class.is-invalid]="getInTouchForm.get('city').invalid && getInTouchForm.get('city').touched"
+                    [class.is-valid]="getInTouchForm.get('city').valid">
+                  <div *ngIf="getInTouchForm.get('city').invalid && getInTouchForm.get('city').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('city').errors?.required">City name is
+                      required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('city').errors?.minlength">Invalid city
+                      name</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('city').errors?.maxlength">Invalid city
+                      name</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('city').errors?.pattern">Invalid city
+                      name</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col form-group">
+                  <label>Message</label>
+                  <textarea class="form-control" formControlName="message" name="message" formControlName="message"
+                    placeholder="" rows="4"
+                    [class.is-invalid]="getInTouchForm.get('message').invalid &&  getInTouchForm.get('message').touched"
+                    [class.is-valid]="getInTouchForm.get('message').valid"></textarea>
+                  <div *ngIf="getInTouchForm.get('message').invalid && getInTouchForm.get('message').touched">
+                    <small class="text-danger" *ngIf="getInTouchForm.get('message').errors?.required">Enter your
+                      message</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('message').errors?.minlength">Atleast 10
+                      characters are required</small>
+                    <small class="text-danger" *ngIf="getInTouchForm.get('message').errors?.maxlength">Only 500
+                      characters
+                      are allowed</small>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-center m-0">
+                <button type="submit" class="btn btn-primary" [disabled]="getInTouchForm.invalid">Submit</button>
+              </p>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p class="mt-4 mb-0 text-center">
+      <a href="signup/healthcare" class="btn btn-primary btn-lg btn_free mt-3">Free Health Provider Sign Up</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="text-center">
+      <span>© 2020 MyDocRide. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<app-login-forgotpassword></app-login-forgotpassword>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="teal" type="ball-clip-rotate-multiple">
+</ngx-spinner>

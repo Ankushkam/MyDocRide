@@ -1,0 +1,119 @@
+<div>
+    <div class="shadow_box paymentPage">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+          <div data-target="#paypal" class="nav-item" id="paypal-tab" data-toggle="tab"  role="tab" aria-controls="paypal" aria-selected="true">
+            <div class="detail">
+              <h3>Paypal</h3>
+              <p>Safe payment online. Credit card needed. Paypal account is not necessary.</p>
+            </div>
+            <div class="icon">
+              <img src="assets/images/paypal.png" class="img-fluid" width="112px" alt="" />
+            </div>
+          </div>
+        
+
+          <div data-target="#creditcard" class="nav-item active" id="creditcard-tab" data-toggle="tab" role="tab" aria-controls="creditcard" aria-selected="false">
+            <div class="detail">
+              <h3>Credit Cards</h3>
+              <p>Safe money transfer using your bank account.
+                Visa, maestro, discover, american express.</p>
+            </div>
+            <div class="icon">
+              <img src="assets/images/credit-debit.png" class="img-fluid" alt="" />
+            </div>
+          </div>
+        
+        </div>
+
+        
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="creditcard" role="tabpanel" aria-labelledby="creditcard-tab">
+            <div class="card-form">
+            <form [formGroup]="payNowForm" novalidate (ngSubmit)="payNow()">
+                <div class="form-group">
+                    <label class="form-label">Name on card</label>
+                    <input type="text" class="form-control" formControlName="name" name="name"
+                        [class.is-invalid]="payNowForm.get('name').touched && payNowForm.get('name').invalid"
+                        [class.is-valid]="payNowForm.get('name').valid"
+                    >
+                    <div *ngIf="payNowForm.get('name').touched && payNowForm.get('name').invalid">
+                        <span class="text-danger" *ngIf="payNowForm.get('name').errors?.required">Name is required</span>
+                        <span class="text-danger" *ngIf="payNowForm.get('name').errors?.pattern">Invalid Name</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"> Card Details </label>
+                    <div id="card-element" class="field"></div>
+                    <div *ngIf="!isCardValid">
+                        <span class="text-danger">{{ cardErrorMsg }}</span>
+                    </div>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="userOption" name="userOption">
+                    <label class="custom-control-label" for="customCheck1">Save this card for future payments</label>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-sm-6">
+                      <button type="submit" [disabled]="payNowForm.invalid" class="btn btn-primary btn-block btn-lg rounded mb-2"><img src="assets/images/shield.png" class="img-fluid" /><span>Pay ${{patientData.total_fare}}</span></button>
+                    </div>
+                    <div class="col-sm-6">
+                      <button type="button" (click)="backToHome()" class="btn btn-outline-primary btn-block btn-lg rounded mb-2">Back To Home</button>
+                    </div>
+                  </div>
+            </form>
+              <div class="orText" *ngIf="cards"><span>OR</span></div>
+              
+              <!-- <div class="saved-cards"> -->
+                <label class="form-label">Saved Cards</label>
+                <ul class="card-list">
+                  <li *ngFor="let card of cards" style="list-style-type: none;">
+                    <input type="radio" name="select_card" [value]="card.card_id" (change)="selectCard($event)">
+                    <img src="assets/images/master-card.png" class="icon" />xxxx - xxxx - xxxx - {{ card.last_four }}
+                    <button *ngIf="selectedCard===card.card_id" type="button" class="btn btn-primary" (click)="payWithThisCard($event, card.card_id, card.customer_id, card.funding)">Pay ${{patientData.total_fare}}</button>  
+                  </li>
+                </ul>
+              <!-- </div> -->
+              
+            </div>
+          </div>
+        
+          <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+            <div #paypal style="width: 400px;"></div>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="paymentSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg payment_popup" role="document">
+      <div class="modal-content"> 
+        <div class="modal-body"> 
+        <div class="thick_section">
+          <img src="assets/images/thick.png" alt=""/>
+          <h5 class="modal-title" id="exampleModalLabel">Payment Successful</h5>
+          <p>Your payment has been processed! Details of transactions are included below</p>
+        </div>
+        <hr/>
+  
+        <div class="form-group row">
+          <label class="col-sm-4">Amount</label>
+          <div class="col-sm-8"> $1 </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4">Payment Type</label>
+          <div class="col-sm-8"> {{ paymentType | titlecase }} Card </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4">Transaction Time</label>
+          <div class="col-sm-8"> {{ payementDate | date:'shortDate' }} - {{ payementDate | date:'shortTime' }} </div>
+        </div>
+  
+          <button type="button" class="btn btn-success btn-success2 rounded" data-dismiss="modal">Print Reciept</button>
+          <button type="button" (click)="backToHome()" class="btn btn-outline-dark rounded">Back To Home</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>

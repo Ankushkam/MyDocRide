@@ -1,0 +1,132 @@
+<div class="pad_top_right">
+    <p><flash-messages></flash-messages></p>
+      <form class="px-md-5 px-sm-2" [formGroup]="staffForm" (ngSubmit)="submitStaffForm()">
+  
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <input type="text" name="first_name" formControlName="first_name" class="form-control" placeholder="First name"
+                [class.is-invalid]="staffForm.get('first_name').invalid && staffForm.get('first_name').touched"
+                [class.is-valid]="staffForm.get('first_name').valid"
+              >
+              <small class="text-danger" *ngIf="staffForm.get('first_name').errors?.serverError">
+                {{ staffForm.get('first_name').errors?.serverError }}
+              </small>
+              <div *ngIf="staffForm.get('first_name').invalid && staffForm.get('first_name').touched">
+                <small class="text-danger" *ngIf="staffForm.get('first_name').errors?.required">First name is required</small>
+                <small class="text-danger" *ngIf="staffForm.get('first_name').errors?.pattern">First name can contain only alphabets</small>
+                <small class="text-danger" *ngIf="staffForm.get('first_name').errors?.maxlength">First name cannot be greater than 25 characters</small>
+              </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" name="last_name" formControlName="last_name" class="form-control" placeholder="Last name"
+                [class.is-invalid]="staffForm.get('last_name').invalid && staffForm.get('last_name').touched"
+                [class.is-valid]="staffForm.get('last_name').valid"
+              >
+              <small class="text-danger" *ngIf="staffForm.get('last_name').errors?.serverError">
+                {{ staffForm.get('last_name').errors?.serverError }}
+              </small>
+              <div *ngIf="staffForm.get('last_name').invalid && staffForm.get('last_name').touched">
+                <small class="text-danger" *ngIf="staffForm.get('last_name').errors?.required">Last name is required</small>
+                <small class="text-danger" *ngIf="staffForm.get('last_name').errors?.pattern">Last name can contain only alphabets</small>
+                <small class="text-danger" *ngIf="staffForm.get('last_name').errors?.maxlength">Last name cannot be greater than 25 characters</small>
+              </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <select name="state" formControlName="state" class="form-control"
+                [class.is-invalid]="staffForm.get('state').invalid && staffForm.get('state').touched"
+                [class.is-valid]="staffForm.get('state').valid"
+              >
+              <option value="" disabled>Select State</option>
+              <option *ngFor="let state of states" [value]="state.Code">
+                {{ state.State }}
+              </option>
+            </select>
+            <small class="text-danger" *ngIf="staffForm.get('state').errors?.serverError">
+                {{ staffForm.get('state').errors?.serverError }}
+              </small>
+            <div *ngIf="staffForm.get('state').invalid && staffForm.get('state').touched">
+              <small class="text-danger" *ngIf="staffForm.get('state').errors?.required">Please select a state</small>
+              <small class="text-danger" *ngIf="staffForm.get('state').errors?.state">Invalid state selected</small>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <input name="city" formControlName="city" class="form-control" placeholder="City"
+                [class.is-invalid]="staffForm.get('city').invalid && staffForm.get('city').touched"
+                [class.is-valid]="staffForm.get('city').valid"
+              >
+              <small class="text-danger" *ngIf="staffForm.get('city').errors?.serverError">
+                {{ staffForm.get('city').errors?.serverError }}
+              </small>
+              <div *ngIf="staffForm.get('city').invalid && staffForm.get('city').touched">
+                <small class="text-danger" *ngIf="staffForm.get('city').errors?.required">City name is required</small>
+                <small class="text-danger" *ngIf="staffForm.get('city').errors?.minlength">Invalid city name</small>
+                <small class="text-danger" *ngIf="staffForm.get('city').errors?.maxlength">Invalid city name</small>
+                <small class="text-danger" *ngIf="staffForm.get('city').errors?.pattern">Invalid city name</small>
+              </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <input type="text" name="street" formControlName="street" class="form-control" placeholder="Address"
+              [class.is-invalid]="staffForm.get('street').invalid && staffForm.get('street').touched"
+              [class.is-valid]="staffForm.get('street').valid"
+            >
+            <small class="text-danger" *ngIf="staffForm.get('street').errors?.serverError">
+                {{ staffForm.get('street').errors?.serverError }}
+              </small>
+            <div *ngIf="staffForm.get('street').invalid && staffForm.get('street').touched">
+              <small class="text-danger" *ngIf="staffForm.get('street').errors?.required">Address is required</small>
+              <small class="text-danger" *ngIf="staffForm.get('street').errors?.minlength">Invalid address</small>
+              <small class="text-danger" *ngIf="staffForm.get('street').errors?.maxlength">Invalid address</small>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" name="zipcode" formControlName="zipcode" class="form-control" placeholder="zipcode"
+              [class.is-invalid]="staffForm.get('zipcode').invalid && staffForm.get('zipcode').touched"
+              [class.is-valid]="staffForm.get('zipcode').valid"
+            >
+            <small class="text-danger" *ngIf="staffForm.get('zipcode').errors?.serverError">
+                {{ staffForm.get('zipcode').errors?.serverError }}
+              </small>
+            <div *ngIf="staffForm.get('zipcode').invalid && staffForm.get('zipcode').touched">
+              <small class="text-danger" *ngIf="staffForm.get('zipcode').errors?.required">zipcode name is required</small>
+              <small class="text-danger" *ngIf="staffForm.get('zipcode').errors?.maxlength">Invalid zipcode</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="text" formControlName="mobile_number" maxlength="10" class="form-control" placeholder="Phone Number"
+                  [class.is-invalid]="staffForm.get('mobile_number').invalid && staffForm.get('mobile_number').touched"
+                  [class.is-valid]="staffForm.get('mobile_number').valid"
+                >
+                <small style="color: grey;">*Do not add country code</small>
+                <div *ngIf="staffForm.get('mobile_number').invalid && staffForm.get('mobile_number').touched">
+                  <small class="text-danger" *ngIf="staffForm.get('mobile_number').errors?.required">Phone number is required</small>
+                  <small class="text-danger" *ngIf="staffForm.get('mobile_number').errors?.pattern">Invalid phone number</small>
+                </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <input 
+                class="form-control"
+                ngx-google-places-autocomplete 
+                [options]='options' 
+                formControlName="location_name"
+                name="location_name"
+                #placesRef="ngx-places" 
+                (onAddressChange)="getLocation($event)"
+                placeholder="Enter Your Location"
+              />
+            </div>
+          </div>
+          <p>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </p>
+      </form>
+    </div>
+  
